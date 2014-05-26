@@ -17,8 +17,8 @@ class ShipmentOut:
             states={
                 'readonly': Eval('state') != 'draft',
             }, depends=['state'])
-    weight_digits = fields.Function(fields.Integer('Weight Digits',
-            on_change_with=['weight_uom']), 'on_change_with_weight_digits')
+    weight_digits = fields.Function(fields.Integer('Weight Digits'),
+        'on_change_with_weight_digits')
     weight = fields.Float('Weight', digits=(16, Eval('weight_digits', 2)),
             states={
                 'readonly': Eval('state') != 'draft',
@@ -53,6 +53,7 @@ class ShipmentOut:
                         to_uom, round=False)
         return weight
 
+    @fields.depends('weight_uom')
     def on_change_with_weight_digits(self, name=None):
         if self.weight_uom:
             return self.weight_uom.digits
@@ -65,8 +66,8 @@ class ShipmentOutReturn:
             states={
                 'readonly': Eval('state') != 'draft',
             }, depends=['state'])
-    weight_digits = fields.Function(fields.Integer('Weight Digits',
-            on_change_with=['weight_uom']), 'on_change_with_weight_digits')
+    weight_digits = fields.Function(fields.Integer('Weight Digits'),
+        'on_change_with_weight_digits')
     weight = fields.Float('Weight', digits=(16, Eval('weight_digits', 2)),
             states={
                 'readonly': Eval('state') != 'draft',
@@ -101,6 +102,7 @@ class ShipmentOutReturn:
                         to_uom, round=False)
         return weight
 
+    @fields.depends('weight_uom')
     def on_change_with_weight_digits(self, name=None):
         if self.weight_uom:
             return self.weight_uom.digits
