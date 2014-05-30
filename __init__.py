@@ -11,6 +11,3 @@ def register():
         ShipmentOut,
         ShipmentOutReturn,
         module='stock_shipment_weight', type_='model')
-    Pool.register(
-        CreateShipmentOutReturn,
-        module='stock_shipment_weight', type_='wizard')

@@ -5,9 +5,8 @@ from trytond.model import fields
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
-from decimal import Decimal
 
-__all__ = ['ShipmentOut', 'ShipmentOutReturn', 'CreateShipmentOutReturn']
+__all__ = ['ShipmentOut', 'ShipmentOutReturn']
 __metaclass__ = PoolMeta
 
 
@@ -107,29 +106,3 @@ class ShipmentOutReturn:
         if self.weight_uom:
             return self.weight_uom.digits
         return 2
-
-
-class CreateShipmentOutReturn:
-    __name__ = 'stock.shipment.out.return.create'
-    #~ More efiency apply codereview:
-    #~ https://bugs.tryton.org/issue3561
-    #~ http://codereview.tryton.org/2391002/
-    #~ http://codereview.tryton.org/2361002/
-
-    def do_start(self, action):
-        pool = Pool()
-        ShipmentOut = pool.get('stock.shipment.out')
-        ShipmentOutReturn = pool.get('stock.shipment.out.return')
-
-        action, data = super(CreateShipmentOutReturn, self).do_start(action)
-        shipment_ids = Transaction().context['active_ids']
-        shipment_outs = ShipmentOut.browse(shipment_ids)
-        shipment_out_returns = ShipmentOutReturn.browse(data['res_id'])
-
-        for shipment_out, shipment_out_return in \
-                zip(shipment_outs, shipment_out_returns):
-            if shipment_out.weight:
-                shipment_out_return.weight = shipment_out.weight
-                shipment_out_return.save()
-
-        return action, data
