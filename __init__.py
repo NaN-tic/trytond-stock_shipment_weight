@@ -4,10 +4,12 @@
 
 from trytond.pool import Pool
 from .shipment import *
+from .move import *
 
 
 def register():
     Pool.register(
         ShipmentOut,
         ShipmentOutReturn,
+        Move,
         module='stock_shipment_weight', type_='model')
