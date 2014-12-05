@@ -2,21 +2,33 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:stock.move,weight:"
+msgid "Weight"
+msgstr "Peso"
+
+msgctxt "field:stock.move,weight_digits:"
+msgid "Weight Digits"
+msgstr "Decimales peso"
+
+msgctxt "field:stock.move,weight_uom:"
+msgid "Weight Uom"
+msgstr "UdM peso"
+
 msgctxt "field:stock.shipment.out,weight:"
 msgid "Weight"
 msgstr "Peso"
 
 msgctxt "field:stock.shipment.out,weight_digits:"
 msgid "Weight Digits"
-msgstr "Dígitos peso"
+msgstr "Decimales peso"
 
 msgctxt "field:stock.shipment.out,weight_func:"
 msgid "Weight"
 msgstr "Peso"
 
 msgctxt "field:stock.shipment.out,weight_lines:"
-msgid "Weight  of Moves"
-msgstr "Peso movimientos"
+msgid "Weight of Moves"
+msgstr "Peso de los movimientos"
 
 msgctxt "field:stock.shipment.out,weight_uom:"
 msgid "Weight Uom"
@@ -28,7 +40,7 @@ msgstr "Peso"
 
 msgctxt "field:stock.shipment.out.return,weight_digits:"
 msgid "Weight Digits"
-msgstr "Dígitos peso"
+msgstr "Decimales peso"
 
 msgctxt "field:stock.shipment.out.return,weight_func:"
 msgid "Weight"
@@ -36,7 +48,7 @@ msgstr "Peso"
 
 msgctxt "field:stock.shipment.out.return,weight_lines:"
 msgid "Weight of Moves"
-msgstr "Peso movimientos"
+msgstr "Peso de los movimientos"
 
 msgctxt "field:stock.shipment.out.return,weight_uom:"
 msgid "Weight Uom"
