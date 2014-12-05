@@ -35,7 +35,7 @@ class ShipmentOut:
     def get_weight_func(self, name=None):
         if self.weight:
             return self.weight
-        return  self.weight_lines
+        return self.weight_lines
 
     def sum_weights(self):
         Uom = Pool().get('product.uom')
@@ -47,9 +47,10 @@ class ShipmentOut:
         for line in self.inventory_moves:
             if line.product.weight:
                 from_uom = line.product.weight_uom
-                to_uom = self.weight_uom and self.weight_uom or line.product.weight_uom
-                weight += Uom.compute_qty(from_uom, line.product.weight * line.quantity,
-                        to_uom, round=False)
+                to_uom = (self.weight_uom and self.weight_uom or
+                    line.product.weight_uom)
+                weight += Uom.compute_qty(from_uom, line.product.weight *
+                    line.quantity, to_uom, round=False)
         return weight
 
     @fields.depends('weight_uom')
@@ -84,7 +85,7 @@ class ShipmentOutReturn:
     def get_weight_func(self, name=None):
         if self.weight:
             return self.weight
-        return  self.weight_lines
+        return self.weight_lines
 
     def sum_weights(self):
         Uom = Pool().get('product.uom')
@@ -96,9 +97,10 @@ class ShipmentOutReturn:
         for line in self.incoming_moves:
             if line.product.weight:
                 from_uom = line.product.weight_uom
-                to_uom = self.weight_uom and self.weight_uom or line.product.weight_uom
-                weight += Uom.compute_qty(from_uom, line.product.weight * line.quantity,
-                        to_uom, round=False)
+                to_uom = (self.weight_uom and self.weight_uom or
+                    line.product.weight_uom)
+                weight += Uom.compute_qty(from_uom, line.product.weight *
+                    line.quantity, to_uom, round=False)
         return weight
 
     @fields.depends('weight_uom')

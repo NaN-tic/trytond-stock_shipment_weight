@@ -12,6 +12,7 @@ MODULE = 'stock_shipment_weight'
 PREFIX = 'trytonzz'
 MODULE2PREFIX = {}
 
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
@@ -40,11 +41,12 @@ tests_require = ['proteus >= %s.%s, < %s.%s' %
 
 setup(name='%s_%s' % (PREFIX, MODULE),
     version=info.get('version', '0.0.1'),
-    description='Tryton module to calculate shipment weight (shipment out and return)',
+    description='Tryton module to calculate shipment weight (shipment out and '
+    'return)',
     author='Zikzakmedia SL',
     author_email='zikzak@zikzakmedia.com',
     url='http://www.zikzakmedia.com',
-    download_url="https://bitbucket.org/zikzakmedia/trytond-"+MODULE,
+    download_url="https://bitbucket.org/zikzakmedia/trytond-" + MODULE,
     package_dir={'trytond.modules.%s' % MODULE: '.'},
     packages=[
         'trytond.modules.%s' % MODULE,
