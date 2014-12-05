@@ -3,12 +3,11 @@
 this repository contains the full copyright notices and license terms. -->
 <data>
     <xpath expr="/form/notebook/page[@id=&quot;inventory_moves&quot;]" position="after">
-        <page string="Weight" id="weight">
-            <label name="weight"/>
-            <field name="weight"/>
+        <page string="Weight" id="weight" col="5" colspan="4">
             <label name="weight_lines"/>
             <field name="weight_lines"/>
-            <label name="weight_uom"/>
+            <label name="weight"/>
+            <field name="weight"/>
             <field name="weight_uom"/>
         </page>
     </xpath>

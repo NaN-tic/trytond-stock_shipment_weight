@@ -14,17 +14,25 @@ class Move:
     weight = fields.Function(fields.Float('Weight',
             digits=(16, Eval('weight_digits', 2)),
             depends=['weight_digits']),
-        'get_product_field', searcher='search_product_field')
+        'on_change_with_weight')
     weight_uom = fields.Function(fields.Many2One('product.uom', 'Weight Uom'),
-        'get_product_field', searcher='search_product_field')
+        'on_change_with_weight_uom', searcher='search_product_field')
     weight_digits = fields.Function(fields.Integer('Weight Digits'),
-        'get_product_field', searcher='search_product_field')
+        'on_change_with_weight_digits')
 
-    def get_product_field(self, name):
-        value = getattr(self.product, name)
-        if name == 'weight_uom' and value != None:
-            value = value.id
-        return value
+    @fields.depends('product', 'quantity')
+    def on_change_with_weight(self, name=None):
+        return (self.product.weight * self.quantity if self.product and
+                self.product.weight and self.quantity else None)
+
+    @fields.depends('product')
+    def on_change_with_weight_uom(self, name=None):
+        return (self.product.weight_uom.id if self.product and
+                self.product.weight_uom else None)
+
+    @fields.depends('product')
+    def on_change_with_weight_digits(self, name=None):
+        return self.product.weight_digits if self.product else None
 
     @classmethod
     def search_product_field(cls, name, clause):

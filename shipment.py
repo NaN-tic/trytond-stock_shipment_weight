@@ -24,15 +24,17 @@ class ShipmentOut:
         }, depends=['state', 'weight_digits'])
     weight_lines = fields.Function(fields.Float('Weight of Moves',
             digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'get_weight')
+            depends=['weight_digits']), 'on_change_with_weight_lines')
     weight_func = fields.Function(fields.Float('Weight',
             digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'get_weight_func')
+            depends=['weight_digits']), 'on_change_with_weight_func')
 
-    def get_weight(self, name=None):
+    @fields.depends('weight_uom', 'inventory_moves')
+    def on_change_with_weight_lines(self, name=None):
         return self.sum_weights()
 
-    def get_weight_func(self, name=None):
+    @fields.depends('weight', 'weight_uom', 'inventory_moves')
+    def on_change_with_weight_func(self, name=None):
         if self.weight:
             return self.weight
         return self.weight_lines
@@ -42,10 +44,9 @@ class ShipmentOut:
 
         weight = 0.0
         for line in self.inventory_moves:
-            if line.product.weight:
+            if line.quantity and line.product and line.product.weight:
                 from_uom = line.product.weight_uom
-                to_uom = (self.weight_uom and self.weight_uom or
-                    line.product.weight_uom)
+                to_uom = self.weight_uom or line.product.weight_uom
                 weight += Uom.compute_qty(from_uom, line.product.weight *
                     line.quantity, to_uom, round=False)
         return weight
@@ -71,15 +72,17 @@ class ShipmentOutReturn:
             }, depends=['state', 'weight_digits'])
     weight_lines = fields.Function(fields.Float('Weight of Moves',
             digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'get_weight')
+            depends=['weight_digits']), 'on_change_with_weight_lines')
     weight_func = fields.Function(fields.Float('Weight',
             digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'get_weight_func')
+            depends=['weight_digits']), 'on_change_with_weight_func')
 
-    def get_weight(self, name=None):
+    @fields.depends('weight_uom', 'inventory_moves')
+    def on_change_with_weight_lines(self, name=None):
         return self.sum_weights()
 
-    def get_weight_func(self, name=None):
+    @fields.depends('weight', 'weight_uom', 'inventory_moves')
+    def on_change_with_weight_func(self, name=None):
         if self.weight:
             return self.weight
         return self.weight_lines
@@ -91,8 +94,7 @@ class ShipmentOutReturn:
         for line in self.incoming_moves:
             if line.product.weight:
                 from_uom = line.product.weight_uom
-                to_uom = (self.weight_uom and self.weight_uom or
-                    line.product.weight_uom)
+                to_uom = self.weight_uom or line.product.weight_uom
                 weight += Uom.compute_qty(from_uom, line.product.weight *
                     line.quantity, to_uom, round=False)
         return weight
