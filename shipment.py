@@ -3,7 +3,6 @@
 #the full copyright notices and license terms.
 from trytond.model import fields
 from trytond.pyson import Eval
-from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
 
 __all__ = ['ShipmentOut', 'ShipmentOutReturn']
@@ -22,7 +21,7 @@ class ShipmentOut:
             states={
                 'readonly': Eval('state') != 'draft',
             }, depends=['state', 'weight_digits'])
-    weight_lines = fields.Function(fields.Float('Weight  of Moves',
+    weight_lines = fields.Function(fields.Float('Weight of Moves',
             digits=(16, Eval('weight_digits', 2)),
             depends=['weight_digits']), 'get_weight')
     weight_func = fields.Function(fields.Float('Weight',
@@ -40,9 +39,6 @@ class ShipmentOut:
     def sum_weights(self):
         Uom = Pool().get('product.uom')
 
-        with Transaction().set_context(language='en_US'):
-            UomCategory = Pool().get('product.uom.category')
-            category, = UomCategory.search(['name', '=', 'Weight'])
         weight = 0.0
         for line in self.inventory_moves:
             if line.product.weight:
@@ -90,9 +86,6 @@ class ShipmentOutReturn:
     def sum_weights(self):
         Uom = Pool().get('product.uom')
 
-        with Transaction().set_context(language='en_US'):
-            UomCategory = Pool().get('product.uom.category')
-            category, = UomCategory.search(['name', '=', 'Weight'])
         weight = 0.0
         for line in self.incoming_moves:
             if line.product.weight:
