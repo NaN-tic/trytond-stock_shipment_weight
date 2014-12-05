@@ -92,7 +92,7 @@ class ShipmentOutReturn:
 
         weight = 0.0
         for line in self.incoming_moves:
-            if line.product.weight:
+            if line.quantity and line.product and line.product.weight:
                 from_uom = line.product.weight_uom
                 to_uom = self.weight_uom or line.product.weight_uom
                 weight += Uom.compute_qty(from_uom, line.product.weight *
