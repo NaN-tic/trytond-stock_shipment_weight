@@ -43,7 +43,7 @@ class ShipmentOut:
                     weight[shipment.id] += Uom.compute_qty(from_uom,
                         line.product.weight * line.quantity, to_uom,
                         round=False)
-        return weight
+        return {'weight_lines': weight}
 
     @fields.depends('weight', 'weight_uom', 'inventory_moves')
     def on_change_with_weight_func(self, name=None):
@@ -91,7 +91,7 @@ class ShipmentOutReturn:
                     weight[shipment.id] += Uom.compute_qty(from_uom,
                         line.product.weight * line.quantity, to_uom,
                         round=False)
-        return weight
+        return {'weight_lines': weight}
 
     @fields.depends('weight', 'weight_uom', 'inventory_moves')
     def on_change_with_weight_func(self, name=None):
