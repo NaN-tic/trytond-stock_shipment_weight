@@ -34,12 +34,13 @@ class ShipmentOut:
         Uom = Pool().get('product.uom')
 
         weight = {}
+        default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
         for shipment in shipments:
             weight[shipment.id] = 0.0
-            for line in shipment.inventory_moves:
+            to_uom = shipment.weight_uom or default_uom
+            for line in shipment.outgoing_moves:
                 if line.quantity and line.product and line.product.weight:
                     from_uom = line.product.weight_uom
-                    to_uom = shipment.weight_uom or line.product.weight_uom
                     weight[shipment.id] += Uom.compute_qty(from_uom,
                         line.product.weight * line.quantity, to_uom,
                         round=False)
