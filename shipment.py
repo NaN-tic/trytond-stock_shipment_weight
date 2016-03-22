@@ -35,10 +35,17 @@ class ShipmentOut:
 
     @classmethod
     def get_weight_lines(cls, shipments, names):
-        Uom = Pool().get('product.uom')
+        pool = Pool()
+        Config = pool.get('stock.configuration')
+        Uom = pool.get('product.uom')
+
+        config = Config(1)
+        if config.weight_uom:
+            default_uom = config.weight_uom
+        else:
+            default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
 
         weight = {}
-        default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
         for shipment in shipments:
             weight[shipment.id] = 0.0
             to_uom = shipment.weight_uom or default_uom
