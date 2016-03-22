@@ -1,6 +1,10 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:stock.configuration,weight_uom:"
+msgid "Weight Uom"
+msgstr "UdM pes"
 
 msgctxt "field:stock.move,weight:"
 msgid "Weight"
