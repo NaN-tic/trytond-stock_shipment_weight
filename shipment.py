@@ -6,10 +6,10 @@ from trytond.pyson import Eval, Id
 from trytond.pool import Pool, PoolMeta
 
 __all__ = ['ShipmentOut', 'ShipmentOutReturn']
-__metaclass__ = PoolMeta
 
 
 class ShipmentOut:
+    __metaclass__ = PoolMeta
     __name__ = 'stock.shipment.out'
     weight_uom = fields.Many2One('product.uom', 'Weight Uom',
         domain=[('category', '=', Id('product', 'uom_cat_weight'))],
@@ -71,6 +71,7 @@ class ShipmentOut:
 
 
 class ShipmentOutReturn:
+    __metaclass__ = PoolMeta
     __name__ = 'stock.shipment.out.return'
     weight_uom = fields.Many2One('product.uom', 'Weight Uom',
             states={

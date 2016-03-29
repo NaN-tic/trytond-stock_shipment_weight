@@ -6,10 +6,9 @@ from trytond.pyson import Eval
 from trytond.pool import PoolMeta
 __all__ = ['Move']
 
-__metaclass__ = PoolMeta
-
 
 class Move:
+    __metaclass__ = PoolMeta
     __name__ = 'stock.move'
     weight = fields.Function(fields.Float('Weight',
             digits=(16, Eval('weight_digits', 2)),
