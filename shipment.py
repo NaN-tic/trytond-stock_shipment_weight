@@ -53,7 +53,7 @@ class ShipmentOut:
                         round=False)
         return {'weight_lines': weight}
 
-    @fields.depends('weight', 'weight_uom', 'inventory_moves')
+    @fields.depends('weight', 'weight_lines')
     def on_change_with_weight_func(self, name=None):
         if self.weight:
             return self.weight
@@ -101,7 +101,7 @@ class ShipmentOutReturn:
                         round=False)
         return {'weight_lines': weight}
 
-    @fields.depends('weight', 'weight_uom', 'inventory_moves')
+    @fields.depends('weight', 'weight_lines')
     def on_change_with_weight_func(self, name=None):
         if self.weight:
             return self.weight
