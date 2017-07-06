@@ -20,10 +20,6 @@ class Move:
     weight_digits = fields.Function(fields.Integer('Weight Digits'),
         'on_change_with_weight_digits')
 
-    @classmethod
-    def default_weight_digits(cls):
-        return 2
-
     @fields.depends('product', 'quantity')
     def on_change_with_weight(self, name=None):
         return (self.product.weight * self.quantity if self.product and
@@ -37,7 +33,3 @@ class Move:
     @fields.depends('product')
     def on_change_with_weight_digits(self, name=None):
         return self.product.weight_digits if self.product else None
-
-    @classmethod
-    def search_product_field(cls, name, clause):
-        return [('product.' + name,) + tuple(clause[1:])]

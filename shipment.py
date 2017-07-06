@@ -30,10 +30,6 @@ class ShipmentOut:
             depends=['weight_digits']), 'on_change_with_weight_func')
 
     @classmethod
-    def default_weight_digits(cls):
-        return 2
-
-    @classmethod
     def get_weight_lines(cls, shipments, names):
         pool = Pool()
         Config = pool.get('stock.configuration')
