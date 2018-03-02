@@ -1,6 +1,7 @@
 # This file is part stock_shipment_weight module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
+from decimal import Decimal
 from trytond.model import fields
 from trytond.pyson import Eval, Id
 from trytond.pool import Pool, PoolMeta
@@ -45,17 +46,20 @@ class ShipmentOut:
         else:
             default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
 
-        weight = {}
+        wlines = dict((s.id, 0.0) for s in shipments)
         for shipment in shipments:
-            weight[shipment.id] = 0.0
             to_uom = shipment.weight_uom or default_uom
+            digits = shipment.weight_digits
+            weight = Decimal(0.0)
             for line in shipment.outgoing_moves:
                 if line.quantity and line.product and line.product.weight:
                     from_uom = line.product.weight_uom
-                    weight[shipment.id] += Uom.compute_qty(from_uom,
+                    weight += Decimal(Uom.compute_qty(from_uom,
                         line.product.weight * line.quantity, to_uom,
-                        round=False)
-        return {'weight_lines': weight}
+                        round=False))
+            wlines[shipment.id] = float(weight.quantize(
+                Decimal(str(10.0 ** -digits))))
+        return {'weight_lines': wlines}
 
     @fields.depends('weight', 'weight_lines')
     def on_change_with_weight_func(self, name=None):
@@ -92,19 +96,30 @@ class ShipmentOutReturn:
 
     @classmethod
     def get_weight_lines(cls, shipments, names):
-        Uom = Pool().get('product.uom')
+        pool = Pool()
+        Config = pool.get('stock.configuration')
+        Uom = pool.get('product.uom')
 
-        weight = {}
+        config = Config(1)
+        if config.weight_uom:
+            default_uom = config.weight_uom
+        else:
+            default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
+
+        wlines = dict((s.id, 0.0) for s in shipments)
         for shipment in shipments:
-            weight[shipment.id] = 0.0
+            to_uom = shipment.weight_uom or default_uom
+            digits = shipment.weight_digits
+            weight = Decimal(0.0)
             for line in shipment.inventory_moves:
                 if line.quantity and line.product and line.product.weight:
                     from_uom = line.product.weight_uom
-                    to_uom = shipment.weight_uom or line.product.weight_uom
-                    weight[shipment.id] += Uom.compute_qty(from_uom,
+                    weight += Decimal(Uom.compute_qty(from_uom,
                         line.product.weight * line.quantity, to_uom,
-                        round=False)
-        return {'weight_lines': weight}
+                        round=False))
+            wlines[shipment.id] = float(weight.quantize(
+                Decimal(str(10.0 ** -digits))))
+        return {'weight_lines': wlines}
 
     @fields.depends('weight', 'weight_lines')
     def on_change_with_weight_func(self, name=None):
