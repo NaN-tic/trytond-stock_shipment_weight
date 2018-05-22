@@ -15,7 +15,7 @@ class Move:
             depends=['weight_digits']),
         'on_change_with_weight')
     weight_uom = fields.Function(fields.Many2One('product.uom', 'Weight Uom'),
-        'on_change_with_weight_uom', searcher='search_product_field')
+        'on_change_with_weight_uom')
     weight_digits = fields.Function(fields.Integer('Weight Digits'),
         'on_change_with_weight_digits')
 
