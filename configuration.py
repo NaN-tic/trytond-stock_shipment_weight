@@ -8,9 +8,7 @@ from trytond.pyson import Id
 __all__ = ['Configuration']
 
 
-class Configuration:
+class Configuration(metaclass=PoolMeta):
     __name__ = 'stock.configuration'
-    __metaclass__ = PoolMeta
-
     weight_uom = fields.Many2One('product.uom', 'Weight Uom',
         domain=[('category', '=', Id('product', 'uom_cat_weight'))])
