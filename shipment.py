@@ -20,7 +20,7 @@ class ShipmentOut(metaclass=PoolMeta):
         'on_change_with_weight_digits')
     weight = fields.Float('Weight', digits=(16, Eval('weight_digits', 2)),
         states={
-            'readonly': Eval('state').in_('cancel', 'done'),
+            'readonly': Eval('state').in_(['cancel', 'done']),
         }, depends=['state', 'weight_digits'])
     weight_lines = fields.Function(fields.Float('Weight of Moves',
             digits=(16, Eval('weight_digits', 2)),
