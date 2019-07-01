@@ -14,7 +14,7 @@ class ShipmentOut(metaclass=PoolMeta):
     weight_uom = fields.Many2One('product.uom', 'Weight Uom',
         domain=[('category', '=', Id('product', 'uom_cat_weight'))],
         states={
-            'readonly': Eval('state') != 'draft',
+            'readonly': Eval('state').in_(['cancel', 'done']),
         }, depends=['state'])
     weight_digits = fields.Function(fields.Integer('Weight Digits'),
         'on_change_with_weight_digits')
