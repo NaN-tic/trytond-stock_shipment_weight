@@ -34,6 +34,10 @@ class ShipmentOut(metaclass=PoolMeta):
         pool = Pool()
         Config = pool.get('stock.configuration')
         Uom = pool.get('product.uom')
+        Move = pool.get('stock.move')
+
+        origins = Move._get_origin()
+        keep_origin = True if 'stock.move' in origins else False
 
         config = Config(1)
         if config.weight_uom:
@@ -46,11 +50,14 @@ class ShipmentOut(metaclass=PoolMeta):
             to_uom = shipment.weight_uom or default_uom
             digits = shipment.weight_digits
             weight = Decimal(0.0)
-            for line in shipment.outgoing_moves:
-                if line.quantity and line.product and line.product.weight:
-                    from_uom = line.product.weight_uom
+            moves = (shipment.inventory_moves
+                if (keep_origin and shipment.inventory_moves)
+                else shipment.outgoing_moves)
+            for move in moves:
+                if move.quantity and move.product and move.product.weight:
+                    from_uom = move.product.weight_uom
                     weight += Decimal(Uom.compute_qty(from_uom,
-                        line.product.weight * line.quantity, to_uom,
+                        move.product.weight * move.quantity, to_uom,
                         round=False))
             wlines[shipment.id] = float(weight.quantize(
                 Decimal(str(10.0 ** -digits))))
@@ -93,6 +100,7 @@ class ShipmentOutReturn(metaclass=PoolMeta):
         pool = Pool()
         Config = pool.get('stock.configuration')
         Uom = pool.get('product.uom')
+        Move = pool.get('stock.move')
 
         config = Config(1)
         if config.weight_uom:
@@ -100,16 +108,22 @@ class ShipmentOutReturn(metaclass=PoolMeta):
         else:
             default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
 
+        origins = Move._get_origin()
+        keep_origin = True if 'stock.move' in origins else False
+
         wlines = dict((s.id, 0.0) for s in shipments)
         for shipment in shipments:
             to_uom = shipment.weight_uom or default_uom
             digits = shipment.weight_digits
             weight = Decimal(0.0)
-            for line in shipment.inventory_moves:
-                if line.quantity and line.product and line.product.weight:
-                    from_uom = line.product.weight_uom
+            moves = (shipment.inventory_moves
+                if (keep_origin and shipment.inventory_moves)
+                else shipment.incoming_moves)
+            for move in moves:
+                if move.quantity and move.product and move.product.weight:
+                    from_uom = move.product.weight_uom
                     weight += Decimal(Uom.compute_qty(from_uom,
-                        line.product.weight * line.quantity, to_uom,
+                        move.product.weight * move.quantity, to_uom,
                         round=False))
             wlines[shipment.id] = float(weight.quantize(
                 Decimal(str(10.0 ** -digits))))
