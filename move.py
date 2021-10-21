@@ -31,4 +31,5 @@ class Move(metaclass=PoolMeta):
 
     @fields.depends('product')
     def on_change_with_weight_digits(self, name=None):
-        return self.product.weight_digits if self.product else None
+        return (self.product.weight_uom.digits
+            if self.product and self.product.weight_uom else None)
