@@ -15,7 +15,7 @@ Imports::
 
 Install stock_shipment_weight::
 
-    >>> config = activate_modules('stock_shipment_weight')
+    >>> config = activate_modules(['stock_shipment_weight', 'product_measurements'])
 
 Create company::
 
