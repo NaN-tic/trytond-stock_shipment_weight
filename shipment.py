@@ -8,6 +8,7 @@ from trytond.pool import Pool, PoolMeta
 
 __all__ = ['ShipmentOut', 'ShipmentOutReturn']
 
+
 class ShipmentWeightMixin:
     weight_uom = fields.Many2One('product.uom', 'Weight Uom',
         domain=[('category', '=', Id('product', 'uom_cat_weight'))],
@@ -44,11 +45,13 @@ class ShipmentWeightMixin:
         pool = Pool()
         Config = pool.get('stock.configuration')
         Uom = pool.get('product.uom')
+        ModelData = pool.get('ir.model.data')
+
         config = Config(1)
         if config.weight_uom:
             default_uom = config.weight_uom
         else:
-            default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
+            default_uom = Uom(ModelData.get_id('product', 'uom_gram'))
 
         return default_uom.id
 
@@ -62,6 +65,7 @@ class ShipmentOut(ShipmentWeightMixin, metaclass=PoolMeta):
         Config = pool.get('stock.configuration')
         Uom = pool.get('product.uom')
         Move = pool.get('stock.move')
+        ModelData = pool.get('ir.model.data')
 
         origins = Move._get_origin()
         keep_origin = True if 'stock.move' in origins else False
@@ -70,7 +74,7 @@ class ShipmentOut(ShipmentWeightMixin, metaclass=PoolMeta):
         if config.weight_uom:
             default_uom = config.weight_uom
         else:
-            default_uom, = Uom.search([('symbol', '=', 'g')], limit=1)
+            default_uom = Uom(ModelData.get_id('product', 'uom_gram'))
 
         wlines = dict((s.id, 0.0) for s in shipments)
         for shipment in shipments:
