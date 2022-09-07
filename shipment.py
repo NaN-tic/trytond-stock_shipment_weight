@@ -9,7 +9,9 @@ from trytond.pool import Pool, PoolMeta
 __all__ = ['ShipmentOut', 'ShipmentOutReturn']
 
 
-class ShipmentWeightMixin:
+class ShipmentWeightMixin(object):
+    __slots__ = ()
+
     weight_uom = fields.Many2One('product.uom', 'Weight Uom',
         domain=[('category', '=', Id('product', 'uom_cat_weight'))],
         states={
