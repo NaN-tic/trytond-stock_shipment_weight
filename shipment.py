@@ -89,9 +89,11 @@ class ShipmentOut(ShipmentWeightMixin, metaclass=PoolMeta):
             for move in moves:
                 if move.quantity and move.product and move.product.weight:
                     from_uom = move.product.weight_uom
-                    weight += Decimal(Uom.compute_qty(from_uom,
-                        move.product.weight * move.quantity, to_uom,
-                        round=False))
+                    parcial_weight = Uom.compute_qty(from_uom, move.product.weight,
+                        to_uom, round=False)
+                    quantity = Uom.compute_qty(move.uom, move.quantity,
+                        move.product.default_uom, round=False)
+                    weight += Decimal(parcial_weight*quantity)
             wlines[shipment.id] = float(weight.quantize(
                 Decimal(str(10.0 ** -digits))))
         return {'weight_lines': wlines}
@@ -126,9 +128,11 @@ class ShipmentInternal(ShipmentWeightMixin, metaclass=PoolMeta):
             for move in moves:
                 if move.quantity and move.product and move.product.weight:
                     from_uom = move.product.weight_uom
-                    weight += Decimal(Uom.compute_qty(from_uom,
-                        move.product.weight * move.quantity, to_uom,
-                        round=False))
+                    parcial_weight = Uom.compute_qty(from_uom, move.product.weight,
+                        to_uom, round=False)
+                    quantity = Uom.compute_qty(move.uom, move.quantity,
+                        move.product.default_uom, round=False)
+                    weight += Decimal(parcial_weight*quantity)
             wlines[shipment.id] = float(weight.quantize(
                 Decimal(str(10.0 ** -digits))))
         return {'weight_lines': wlines}
@@ -179,9 +183,11 @@ class ShipmentOutReturn(metaclass=PoolMeta):
             for move in moves:
                 if move.quantity and move.product and move.product.weight:
                     from_uom = move.product.weight_uom
-                    weight += Decimal(Uom.compute_qty(from_uom,
-                        move.product.weight * move.quantity, to_uom,
-                        round=False))
+                    parcial_weight = Uom.compute_qty(from_uom, move.product.weight,
+                        to_uom, round=False)
+                    quantity = Uom.compute_qty(move.uom, move.quantity,
+                        move.product.default_uom, round=False)
+                    weight += Decimal(parcial_weight*quantity)
             wlines[shipment.id] = float(weight.quantize(
                 Decimal(str(10.0 ** -digits))))
         return {'weight_lines': wlines}
