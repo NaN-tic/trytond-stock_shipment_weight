@@ -3,7 +3,7 @@
 # copyright notices and license terms.
 from trytond.model import fields
 from trytond.pyson import Eval
-from trytond.pool import PoolMeta
+from trytond.pool import Pool, PoolMeta
 
 __all__ = ['Move']
 
@@ -19,10 +19,14 @@ class Move(metaclass=PoolMeta):
     weight_digits = fields.Function(fields.Integer('Weight Digits'),
         'on_change_with_weight_digits')
 
-    @fields.depends('product', 'quantity')
+    @fields.depends('product', 'quantity', 'uom')
     def on_change_with_weight(self, name=None):
-        return (self.product.weight * self.quantity if self.product and
+        Uom = Pool().get('product.uom')
+        qty = Uom.compute_qty(self.uom, self.quantity,
+            self.product and self.product.default_uom)
+        weight = (self.product.weight * qty if self.product and
                 self.product.weight and self.quantity else None)
+        return weight
 
     @fields.depends('product')
     def on_change_with_weight_uom(self, name=None):
