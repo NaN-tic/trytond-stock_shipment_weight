@@ -15,7 +15,7 @@ Imports::
 
 Install stock_shipment_weight::
 
-    >>> config = activate_modules(['stock_shipment_weight', 'product_measurements'])
+    >>> config = activate_modules(['stock_shipment_weight'])
 
 Create company::
 
@@ -69,7 +69,8 @@ Create Customer Shipment::
     >>> outgoing_move.unit_price = Decimal('1')
     >>> outgoing_move.currency = company.currency
     >>> shipment.save()
-    >>> shipment.weight_func == 20
+    >>> shipment.manual_weight = 10
+    >>> shipment.weight == 0.02
     True
 
 Create Customer Return Shipment::
@@ -89,5 +90,6 @@ Create Customer Return Shipment::
     >>> incoming_move.currency = company.currency
     >>> shipment.save()
     >>> shipment.click('receive')
-    >>> shipment.weight_func == 20
+    >>> shipment.manual_weight = 10
+    >>> shipment.weight == 0.02
     True
