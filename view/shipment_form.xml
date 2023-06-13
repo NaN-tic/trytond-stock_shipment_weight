@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+<!-- This file is part of stock_shipment_weight. The COPYRIGHT file at the top level of
 this repository contains the full copyright notices and license terms. -->
 <data>
-    <xpath expr="//page[@id='other']" position="inside">
-        <separator id="measurements" colspan="4" string="Measurements"/>
+    <xpath expr="//page[@id='other']/label[@name='weight']" position="replace"/>
+    <xpath expr="//page[@id='other']/field[@name='weight']" position="replace"/>
+    <xpath expr="//page[@id='other']/separator[@id='measurements']" position="after">
         <group id="measurements_weight" colspan="4" col="6">
             <label name="weight"/>
             <field name="weight"/>
@@ -12,8 +13,5 @@ this repository contains the full copyright notices and license terms. -->
             <label name="weight_uom"/>
             <field name="weight_uom"/>
         </group>
-        <label name="volume"/>
-        <field name="volume"/>
-        <newline/>
     </xpath>
 </data>
