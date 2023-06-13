@@ -2,90 +2,58 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
-msgctxt "field:stock.configuration,weight_uom:"
-msgid "Weight Uom"
-msgstr "UdM del pes"
+msgctxt "field:stock.shipment.internal,manual_weight:"
+msgid "Manual Weight"
+msgstr "Pes manual"
 
-msgctxt "field:stock.move,weight:"
-msgid "Weight"
-msgstr "Pes"
+msgctxt "field:stock.shipment.internal,volume:"
+msgid "Volume"
+msgstr "Volum"
 
-msgctxt "field:stock.move,weight_digits:"
-msgid "Weight Digits"
-msgstr "Decimals del pes"
-
-msgctxt "field:stock.move,weight_uom:"
-msgid "Weight Uom"
-msgstr "UdM del pes"
+msgctxt "field:stock.shipment.internal,volume_uom:"
+msgid "Volume Uom"
+msgstr "Volum Udm"
 
 msgctxt "field:stock.shipment.internal,weight:"
 msgid "Weight"
 msgstr "Pes"
 
-msgctxt "field:stock.shipment.internal,weight_digits:"
-msgid "Weight Digits"
-msgstr "Decimals del pes"
-
-msgctxt "field:stock.shipment.internal,weight_func:"
-msgid "Weight"
-msgstr "Pes"
-
-msgctxt "field:stock.shipment.internal,weight_lines:"
-msgid "Weight of Moves"
-msgstr "Pes dels moviments"
-
 msgctxt "field:stock.shipment.internal,weight_uom:"
 msgid "Weight Uom"
-msgstr "UdM del pes"
+msgstr "Unitat de pes"
+
+msgctxt "field:stock.shipment.out,manual_weight:"
+msgid "Manual Weight"
+msgstr "Pes manual"
 
 msgctxt "field:stock.shipment.out,weight:"
 msgid "Weight"
 msgstr "Pes"
 
-msgctxt "field:stock.shipment.out,weight_digits:"
-msgid "Weight Digits"
-msgstr "Decimals del pes"
-
-msgctxt "field:stock.shipment.out,weight_func:"
-msgid "Weight"
-msgstr "Pes"
-
-msgctxt "field:stock.shipment.out,weight_lines:"
-msgid "Weight of Moves"
-msgstr "Pes dels moviments"
-
 msgctxt "field:stock.shipment.out,weight_uom:"
 msgid "Weight Uom"
-msgstr "UdM del pes"
+msgstr "Unitat de pes"
+
+msgctxt "field:stock.shipment.out.return,manual_weight:"
+msgid "Manual Weight"
+msgstr "Pes manual"
 
 msgctxt "field:stock.shipment.out.return,weight:"
 msgid "Weight"
 msgstr "Pes"
 
-msgctxt "field:stock.shipment.out.return,weight_digits:"
-msgid "Weight Digits"
-msgstr "Decimals del pes"
-
-msgctxt "field:stock.shipment.out.return,weight_func:"
-msgid "Weight"
-msgstr "Pes"
-
-msgctxt "field:stock.shipment.out.return,weight_lines:"
-msgid "Weight of Moves"
-msgstr "Pes dels moviments"
-
 msgctxt "field:stock.shipment.out.return,weight_uom:"
 msgid "Weight Uom"
-msgstr "UdM del pes"
+msgstr "Unitat de pes"
+
+msgctxt "help:stock.shipment.internal,volume:"
+msgid "The total volume of the record's moves."
+msgstr "El volum total dels moviments del registrte."
+
+msgctxt "help:stock.shipment.internal,weight:"
+msgid "The total weight of the record's moves."
+msgstr "El peso total dels moviments del registre."
 
 msgctxt "view:stock.shipment.internal:"
-msgid "Weight"
-msgstr "Pes"
-
-msgctxt "view:stock.shipment.out.return:"
-msgid "Weight"
-msgstr "Pes"
-
-msgctxt "view:stock.shipment.out:"
-msgid "Weight"
-msgstr "Pes"
+msgid "Measurements"
+msgstr "Mesures"

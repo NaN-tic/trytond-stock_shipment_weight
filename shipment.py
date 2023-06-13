@@ -5,203 +5,58 @@ from decimal import Decimal
 from trytond.model import fields
 from trytond.pyson import Eval, Id
 from trytond.pool import Pool, PoolMeta
+from trytond.transaction import Transaction
+from trytond.modules.stock_shipment_measurements.stock import MeasurementsMixin
 
-__all__ = ['ShipmentOut', 'ShipmentOutReturn']
 
-
-class ShipmentWeightMixin(object):
+class ShipmentManualWeightMixin(object):
     __slots__ = ()
 
-    weight_uom = fields.Many2One('product.uom', 'Weight Uom',
-        domain=[('category', '=', Id('product', 'uom_cat_weight'))],
+    manual_weight = fields.Float('Manual Weight', digits='weight_uom',
         states={
             'readonly': Eval('state').in_(['cancelled', 'done']),
         }, depends=['state'])
-    weight_digits = fields.Function(fields.Integer('Weight Digits'),
-        'on_change_with_weight_digits')
-    weight = fields.Float('Weight', digits=(16, Eval('weight_digits', 2)),
-        states={
-            'readonly': Eval('state').in_(['cancelled', 'done']),
-        }, depends=['state', 'weight_digits'])
-    weight_lines = fields.Function(fields.Float('Weight of Moves',
-            digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'get_weight_lines')
-    weight_func = fields.Function(fields.Float('Weight',
-            digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'on_change_with_weight_func')
-
-    @fields.depends('weight', 'weight_lines')
-    def on_change_with_weight_func(self, name=None):
-        if self.weight:
-            return self.weight
-        return self.weight_lines
-
-    @fields.depends('weight_uom')
-    def on_change_with_weight_digits(self, name=None):
-        if self.weight_uom:
-            return self.weight_uom.digits
-        return 2
 
     @classmethod
-    def default_weight_uom(cls):
-        pool = Pool()
-        Config = pool.get('stock.configuration')
-        Uom = pool.get('product.uom')
-        ModelData = pool.get('ir.model.data')
+    def __register__(cls, module_name):
+        sql_table = cls.__table__()
+        table = cls.__table_handler__(module_name)
 
-        config = Config(1)
-        if config.weight_uom:
-            default_uom = config.weight_uom
-        else:
-            default_uom = Uom(ModelData.get_id('product', 'uom_gram'))
+        transaction = Transaction()
+        cursor = transaction.connection.cursor()
 
-        return default_uom.id
+        weight = table.column_exist('weight')
+
+        super().__register__(module_name)
+
+        if weight:
+            cursor.execute(*sql_table.update(
+                    columns=[sql_table.manual_weight],
+                    values=[sql_table.weight]))
+            table.drop_column('weight')
+            table.drop_column('weight_uom')
 
 
-class ShipmentOut(ShipmentWeightMixin, metaclass=PoolMeta):
+class ShipmentIn(ShipmentManualWeightMixin, metaclass=PoolMeta):
+    __name__ = 'stock.shipment.in'
+
+
+class ShipmentInReturn(ShipmentManualWeightMixin, metaclass=PoolMeta):
+    __name__ = 'stock.shipment.in.return'
+
+
+class ShipmentOut(ShipmentManualWeightMixin, metaclass=PoolMeta):
     __name__ = 'stock.shipment.out'
 
-    @classmethod
-    def get_weight_lines(cls, shipments, names):
-        pool = Pool()
-        Config = pool.get('stock.configuration')
-        Uom = pool.get('product.uom')
-        Move = pool.get('stock.move')
-        ModelData = pool.get('ir.model.data')
 
-        origins = Move._get_origin()
-        keep_origin = True if 'stock.move' in origins else False
+class ShipmentOutReturn(ShipmentManualWeightMixin, metaclass=PoolMeta):
+    __name__ = 'stock.shipment.out.return'
 
-        config = Config(1)
-        if config.weight_uom:
-            default_uom = config.weight_uom
-        else:
-            default_uom = Uom(ModelData.get_id('product', 'uom_gram'))
 
-        wlines = dict((s.id, 0.0) for s in shipments)
-        for shipment in shipments:
-            to_uom = shipment.weight_uom or default_uom
-            digits = shipment.weight_digits
-            weight = Decimal(0.0)
-            moves = (shipment.inventory_moves
-                if (keep_origin and shipment.inventory_moves)
-                else shipment.outgoing_moves)
-            for move in moves:
-                if move.quantity and move.product and move.product.weight:
-                    from_uom = move.product.weight_uom
-                    parcial_weight = Uom.compute_qty(from_uom, move.product.weight,
-                        to_uom, round=False)
-                    quantity = Uom.compute_qty(move.uom, move.quantity,
-                        move.product.default_uom, round=False)
-                    weight += Decimal(parcial_weight*quantity)
-            wlines[shipment.id] = float(weight.quantize(
-                Decimal(str(10.0 ** -digits))))
-        return {'weight_lines': wlines}
-
-class ShipmentInternal(ShipmentWeightMixin, metaclass=PoolMeta):
+class ShipmentInternal(MeasurementsMixin, ShipmentManualWeightMixin,
+        metaclass=PoolMeta):
     __name__ = 'stock.shipment.internal'
 
     @classmethod
-    def get_weight_lines(cls, shipments, names):
-        pool = Pool()
-        Config = pool.get('stock.configuration')
-        Uom = pool.get('product.uom')
-        Move = pool.get('stock.move')
-        ModelData = pool.get('ir.model.data')
-
-        origins = Move._get_origin()
-        keep_origin = True if 'stock.move' in origins else False
-
-        config = Config(1)
-        if config.weight_uom:
-            default_uom = config.weight_uom
-        else:
-            default_uom = Uom(ModelData.get_id('product', 'uom_gram'))
-
-        wlines = dict((s.id, 0.0) for s in shipments)
-        for shipment in shipments:
-            to_uom = shipment.weight_uom or default_uom
-            digits = shipment.weight_digits
-            weight = Decimal(0.0)
-            moves = (shipment.outgoing_moves
-                if (keep_origin and shipment.outgoing_moves)
-                else shipment.incoming_moves)
-            for move in moves:
-                if move.quantity and move.product and move.product.weight:
-                    from_uom = move.product.weight_uom
-                    parcial_weight = Uom.compute_qty(from_uom, move.product.weight,
-                        to_uom, round=False)
-                    quantity = Uom.compute_qty(move.uom, move.quantity,
-                        move.product.default_uom, round=False)
-                    weight += Decimal(parcial_weight*quantity)
-            wlines[shipment.id] = float(weight.quantize(
-                Decimal(str(10.0 ** -digits))))
-        return {'weight_lines': wlines}
-
-class ShipmentOutReturn(metaclass=PoolMeta):
-    __name__ = 'stock.shipment.out.return'
-    weight_uom = fields.Many2One('product.uom', 'Weight Uom',
-            states={
-                'readonly': Eval('state') != 'draft',
-            }, depends=['state'])
-    weight_digits = fields.Function(fields.Integer('Weight Digits'),
-        'on_change_with_weight_digits')
-    weight = fields.Float('Weight', digits=(16, Eval('weight_digits', 2)),
-            states={
-                'readonly': Eval('state') != 'draft',
-            }, depends=['state', 'weight_digits'])
-    weight_lines = fields.Function(fields.Float('Weight of Moves',
-            digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'get_weight_lines')
-    weight_func = fields.Function(fields.Float('Weight',
-            digits=(16, Eval('weight_digits', 2)),
-            depends=['weight_digits']), 'on_change_with_weight_func')
-
-    @classmethod
-    def get_weight_lines(cls, shipments, names):
-        pool = Pool()
-        Config = pool.get('stock.configuration')
-        Uom = pool.get('product.uom')
-        Move = pool.get('stock.move')
-        ModelData = pool.get('ir.model.data')
-
-        config = Config(1)
-        if config.weight_uom:
-            default_uom = config.weight_uom
-        else:
-            default_uom = Uom(ModelData.get_id('product', 'uom_gram'))
-
-        origins = Move._get_origin()
-        keep_origin = True if 'stock.move' in origins else False
-
-        wlines = dict((s.id, 0.0) for s in shipments)
-        for shipment in shipments:
-            to_uom = shipment.weight_uom or default_uom
-            digits = shipment.weight_digits
-            weight = Decimal(0.0)
-            moves = (shipment.inventory_moves
-                if (keep_origin and shipment.inventory_moves)
-                else shipment.incoming_moves)
-            for move in moves:
-                if move.quantity and move.product and move.product.weight:
-                    from_uom = move.product.weight_uom
-                    parcial_weight = Uom.compute_qty(from_uom, move.product.weight,
-                        to_uom, round=False)
-                    quantity = Uom.compute_qty(move.uom, move.quantity,
-                        move.product.default_uom, round=False)
-                    weight += Decimal(parcial_weight*quantity)
-            wlines[shipment.id] = float(weight.quantize(
-                Decimal(str(10.0 ** -digits))))
-        return {'weight_lines': wlines}
-
-    @fields.depends('weight', 'weight_lines')
-    def on_change_with_weight_func(self, name=None):
-        if self.weight:
-            return self.weight
-        return self.weight_lines
-
-    @fields.depends('weight_uom')
-    def on_change_with_weight_digits(self, name=None):
-        if self.weight_uom:
-            return self.weight_uom.digits
-        return 2
+    def _measurements_location_condition(cls, shipment, move, location):
+        return move.from_location == location.id
