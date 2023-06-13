@@ -4,10 +4,9 @@ The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <data>
     <xpath expr="/form/field[@name='effective_date']" position="after">
-        <group col="3" colspan="2" id="weight">
-            <label name="weight"/>
-            <field name="weight"/>
-            <field name="weight_uom"/>
+        <group col="2" colspan="2" id="weight">
+            <label name="internal_weight"/>
+            <field name="internal_weight"/>
         </group>
     </xpath>
 </data>
