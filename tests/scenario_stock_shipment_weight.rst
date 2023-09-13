@@ -61,7 +61,7 @@ Create Customer Shipment::
     >>> outgoing_move = Move()
     >>> shipment.outgoing_moves.append(outgoing_move)
     >>> outgoing_move.product = product
-    >>> outgoing_move.uom = unit
+    >>> outgoing_move.unit = unit
     >>> outgoing_move.quantity = 2
     >>> outgoing_move.from_location = shipment.warehouse.output_location
     >>> outgoing_move.to_location = customer_loc
@@ -81,7 +81,7 @@ Create Customer Return Shipment::
     >>> incoming_move = Move()
     >>> shipment.incoming_moves.append(incoming_move)
     >>> incoming_move.product = product
-    >>> incoming_move.uom = unit
+    >>> incoming_move.unit = unit
     >>> incoming_move.quantity = 2
     >>> incoming_move.from_location = customer_loc
     >>> incoming_move.to_location = shipment.warehouse.input_location
