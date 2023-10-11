@@ -1,10 +1,9 @@
 # This file is part stock_shipment_weight module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
-from decimal import Decimal
 from trytond.model import fields
-from trytond.pyson import Eval, Id
-from trytond.pool import Pool, PoolMeta
+from trytond.pyson import Eval
+from trytond.pool import PoolMeta
 from trytond.transaction import Transaction
 from trytond.modules.stock_shipment_measurements.stock import MeasurementsMixin
 
