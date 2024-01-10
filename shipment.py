@@ -14,7 +14,7 @@ class ShipmentManualWeightMixin(object):
     manual_weight = fields.Float('Manual Weight', digits='weight_uom',
         states={
             'readonly': Eval('state').in_(['cancelled', 'done']),
-        }, depends=['state'])
+        })
 
     @classmethod
     def __register__(cls, module_name):
