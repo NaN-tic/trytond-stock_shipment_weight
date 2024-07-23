@@ -2,6 +2,30 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:stock.package,manual_weight:"
+msgid "Manual Weight"
+msgstr "Pes manual"
+
+msgctxt "field:stock.package,manual_weight_uom:"
+msgid "Manual Weight UOM"
+msgstr "Unitat de pes manual"
+
+msgctxt "field:stock.package.type,manual_weight:"
+msgid "Manual Weight"
+msgstr "Pes manual"
+
+msgctxt "field:stock.package.type,manual_weight_uom:"
+msgid "Manual Weight UOM"
+msgstr "Unitat de pes manual"
+
+msgctxt "field:stock.shipment.in,manual_weight:"
+msgid "Manual Weight"
+msgstr "Pes manual"
+
+msgctxt "field:stock.shipment.in.return,manual_weight:"
+msgid "Manual Weight"
+msgstr "Pes manual"
+
 msgctxt "field:stock.shipment.internal,manual_weight:"
 msgid "Manual Weight"
 msgstr "Pes manual"
@@ -45,6 +69,14 @@ msgstr "Pes"
 msgctxt "field:stock.shipment.out.return,weight_uom:"
 msgid "Weight Uom"
 msgstr "Unitat de pes"
+
+msgctxt "help:stock.package,manual_weight:"
+msgid "The manual weight of the package when empty."
+msgstr "El pes manual del paquet quan està buit."
+
+msgctxt "help:stock.package.type,manual_weight:"
+msgid "The manual weight of the package when empty."
+msgstr "El pes manual del paquet quan està buit."
 
 msgctxt "help:stock.shipment.internal,volume:"
 msgid "The total volume of the record's moves."
