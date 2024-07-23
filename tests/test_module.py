@@ -9,6 +9,6 @@ from trytond.tests.test_tryton import ModuleTestCase
 class StockShipmentWeightTestCase(CompanyTestMixin, ModuleTestCase):
     'Test StockShipmentWeight module'
     module = 'stock_shipment_weight'
-
+    extras = ['stock_package']
 
 del ModuleTestCase

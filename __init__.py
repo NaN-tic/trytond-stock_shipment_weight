@@ -3,6 +3,7 @@
 # the full copyright notices and license terms.
 from trytond.pool import Pool
 from . import shipment
+from . import package
 
 def register():
     Pool.register(
@@ -11,4 +12,9 @@ def register():
         shipment.ShipmentInternal,
         shipment.ShipmentOut,
         shipment.ShipmentOutReturn,
+        module='stock_shipment_weight', type_='model')
+    Pool.register(
+        package.PackageType,
+        package.Package,
+        depends=['stock_package'],
         module='stock_shipment_weight', type_='model')
