@@ -110,7 +110,7 @@ Package products::
     >>> package2.moves.append(moves[0])
 
     >>> shipment_out.click('pack')
-    >>> [(package.manual_weight, package.weight) for package in shipment_out.packages]
-    [(80.0, None), (100.0, None), (30.0, None)]
+    >>> [(package.manual_weight, package.weight, len(package.moves)) for package in shipment_out.packages]
+    [(80.0, None, 0), (100.0, 0.0, 1), (30.0, 0.0, 1)]
     >>> sum(package.total_weight for package in shipment_out.packages if package.parent == None)
     210.0
