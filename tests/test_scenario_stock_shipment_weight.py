@@ -51,11 +51,15 @@ class Test(unittest.TestCase):
         template.save()
         product, = template.products
 
-        # Create Customer Shipment
+        # Locations
         Location = Model.get('stock.location')
+        customer_loc, = Location.find([('type', '=', 'customer')], limit=1)
+        storage_loc, = Location.find([('type', '=', 'storage')], limit=1)
+        lost_loc, = Location.find([('type', '=', 'lost_found')], limit=1)
+
+        # Create Customer Shipment
         ShipmentOut = Model.get('stock.shipment.out')
         Move = Model.get('stock.move')
-        customer_loc, = Location.find([('type', '=', 'customer')], limit=1)
         shipment = ShipmentOut()
         shipment.customer = customer
         outgoing_move = Move()
@@ -89,4 +93,20 @@ class Test(unittest.TestCase):
         shipment.save()
         shipment.click('receive')
         shipment.manual_weight = 10
+        self.assertEqual(shipment.weight, 0.02)
+
+        # Create Internal Shipment
+        ShipmentInternal = Model.get('stock.shipment.internal')
+        shipment = ShipmentInternal()
+        shipment.from_location = storage_loc
+        shipment.to_location = lost_loc
+        incoming_move = Move()
+        shipment.incoming_moves.append(incoming_move)
+        incoming_move.from_location = shipment.from_location
+        incoming_move.to_location = lost_loc
+        incoming_move.product = product
+        incoming_move.unit = unit
+        incoming_move.quantity = 2
+        incoming_move.company = company
+        shipment.save()
         self.assertEqual(shipment.weight, 0.02)
