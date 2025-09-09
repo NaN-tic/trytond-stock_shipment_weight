@@ -59,3 +59,7 @@ class ShipmentInternal(MeasurementsMixin, ShipmentManualWeightMixin,
     @classmethod
     def _measurements_location_condition(cls, shipment, move, location):
         return move.from_location == location.id
+
+    @classmethod
+    def _measurements_move_condition(cls, table, move):
+        return super()._measurements_move_condition(table, move) & (table.to_location == move.to_location)
