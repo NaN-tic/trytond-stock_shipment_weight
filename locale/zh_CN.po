@@ -1,0 +1,128 @@
+#
+msgid ""
+msgstr ""
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "field:stock.package,manual_weight:"
+msgid "Manual Weight"
+msgstr "手动重量"
+
+msgctxt "field:stock.package,manual_weight_uom:"
+msgid "Manual Weight UOM"
+msgstr "手工重量计量单位"
+
+msgctxt "field:stock.package.type,manual_weight:"
+msgid "Manual Weight"
+msgstr "手动重量"
+
+msgctxt "field:stock.package.type,manual_weight_uom:"
+msgid "Manual Weight UOM"
+msgstr "手工重量计量单位"
+
+msgctxt "field:stock.shipment.in,manual_weight:"
+msgid "Manual Weight"
+msgstr "手动重量"
+
+msgctxt "field:stock.shipment.in.return,manual_weight:"
+msgid "Manual Weight"
+msgstr "手动重量"
+
+msgctxt "field:stock.shipment.internal,manual_weight:"
+msgid "Manual Weight"
+msgstr "手动重量"
+
+msgctxt "field:stock.shipment.internal,volume:"
+msgid "Volume"
+msgstr "体积或容量"
+
+msgctxt "field:stock.shipment.internal,volume_uom:"
+msgid "Volume Uom"
+msgstr "体积单位"
+
+msgctxt "field:stock.shipment.internal,weight:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.internal,weight_uom:"
+msgid "Weight Uom"
+msgstr "重量单位"
+
+msgctxt "field:stock.shipment.out,manual_weight:"
+msgid "Manual Weight"
+msgstr "手动重量"
+
+msgctxt "field:stock.shipment.out,weight:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.out,weight_uom:"
+msgid "Weight Uom"
+msgstr "重量单位"
+
+msgctxt "field:stock.shipment.out.return,manual_weight:"
+msgid "Manual Weight"
+msgstr "手动重量"
+
+msgctxt "field:stock.shipment.out.return,weight:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.out.return,weight_uom:"
+msgid "Weight Uom"
+msgstr "重量单位"
+
+msgctxt "help:stock.package,manual_weight:"
+msgid "The manual weight of the package when empty."
+msgstr "手工填写的空包裹重量。"
+
+msgctxt "help:stock.package.type,manual_weight:"
+msgid "The manual weight of the package when empty."
+msgstr "手工填写的空包裹重量。"
+
+msgctxt "help:stock.shipment.internal,volume:"
+msgid "The total volume of the record's moves."
+msgstr "此记录中所有移动的总体积。"
+
+msgctxt "help:stock.shipment.internal,weight:"
+msgid "The total weight of the record's moves."
+msgstr "此记录中所有移动的总重量。"
+
+msgctxt "view:stock.shipment.internal:"
+msgid "Measurements"
+msgstr "尺寸和重量"
+
+msgctxt "field:stock.shipment.in,weight:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.in,weight_uom:"
+msgid "Weight Uom"
+msgstr "重量单位"
+
+msgctxt "field:stock.shipment.in.return,weight:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.in.return,weight_uom:"
+msgid "Weight Uom"
+msgstr "重量单位"
+
+msgctxt "field:stock.move,weight:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.internal,weight_func:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.out.return,weight_func:"
+msgid "Weight"
+msgstr "重量"
+
+msgctxt "field:stock.shipment.out,weight_func:"
+msgid "Weight"
+msgstr "重量"
